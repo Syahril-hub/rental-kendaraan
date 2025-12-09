@@ -10,7 +10,7 @@ class Kendaraan extends Model
     /** @use HasFactory<\Database\Factories\KendaraanFactory> */
     use HasFactory;
 
-    protected $table = 'kendaraan';
+    protected $table = 'kendaraans';
 
     protected $fillable = [
         'nama',
