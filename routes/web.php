@@ -2,6 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\KendaraanController;
+
+Route::middleware('admin')->prefix('admin')->group(function () {
+    Route::get('/kendaraan', [KendaraanController::class, 'index']);
+    Route::get('/kendaraan/create', [KendaraanController::class, 'create']);
+    Route::post('/kendaraan', [KendaraanController::class, 'store']);
+});
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
