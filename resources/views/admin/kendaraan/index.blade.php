@@ -26,6 +26,22 @@
         <td>{{ $k->no_plat }}</td>
         <td>{{ $k->harga_per_hari }}</td>
         <td>{{ $k->status }}</td>
+        <td>
+            <a href="{{ route('admin.kendaraan.edit', $k->id) }}">
+                Edit
+            </a>
+
+            <form action="{{ route('admin.kendaraan.destroy', $k->id) }}"
+                method="POST"
+                style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button onclick="return confirm('Yakin mau hapus?')">
+                    Hapus
+                </button>
+            </form>
+        </td>
     </tr>
+
     @endforeach
 </table>

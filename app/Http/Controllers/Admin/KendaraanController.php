@@ -25,7 +25,7 @@ class KendaraanController extends Controller
             'nama' => 'required',
             'brand' => 'required',
             'tipe' => 'required',
-            'no_plat' => 'required|unique:kendaraan,no_plat',
+            'no_plat' => 'required|unique:kendaraans,no_plat',
             'harga_per_hari' => 'required|numeric',
         ]);
 
@@ -34,4 +34,37 @@ class KendaraanController extends Controller
         return redirect('/admin/kendaraan')
             ->with('success', 'Kendaraan berhasil ditambahkan');
     }
+
+    public function edit($id)
+    {
+        $kendaraan = Kendaraan::findOrFail($id);
+        return view('admin.kendaraan.edit', compact('kendaraan'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'brand' => 'required',
+            'tipe' => 'required',
+            'no_plat' => 'required|unique:kendaraans,no_plat,' . $id,
+            'harga_per_hari' => 'required|numeric',
+            ]);
+
+        $kendaraan = Kendaraan::findOrFail($id);
+        $kendaraan->update($request->all());
+
+        return redirect('/admin/kendaraan')
+            ->with('success', 'Kendaraan berhasil diupdate');
+    }
+
+    public function destroy($id)
+    {
+        $kendaraan = Kendaraan::findOrFail($id);
+        $kendaraan->delete();
+
+        return redirect('/admin/kendaraan')
+            ->with('success', 'Kendaraan berhasil dihapus');
+    }
+
 }
