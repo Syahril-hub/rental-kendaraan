@@ -14,7 +14,10 @@
         </div>
     @endif
 
-    <form action="{{ route('admin.kendaraan.update', $kendaraan->id) }}" method="POST">
+    <form action="{{ route('admin.kendaraan.update', $kendaraan->id) }}" 
+      method="POST" 
+      enctype="multipart/form-data">
+
         @csrf
         @method('PUT')
 
@@ -47,6 +50,17 @@
             <input type="number" name="harga_per_hari" class="form-control"
                    value="{{ old('harga_per_hari', $kendaraan->harga_per_hari) }}">
         </div>
+
+        <div class="mb-3">
+            <label>Gambar Kendaraan</label><br>
+
+            @if ($kendaraan->gambar)
+                <img src="{{ asset('uploads/kendaraan/' . $kendaraan->gambar) }}" width="120"><br><br>
+            @endif
+
+            <input type="file" name="gambar">
+        </div>
+
 
         <button class="btn btn-primary">Update</button>
         <a href="{{ route('admin.kendaraan.index') }}" class="btn btn-secondary">
