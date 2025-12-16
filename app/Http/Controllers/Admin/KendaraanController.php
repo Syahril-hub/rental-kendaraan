@@ -27,13 +27,25 @@ class KendaraanController extends Controller
             'tipe' => 'required',
             'no_plat' => 'required|unique:kendaraans,no_plat',
             'harga_per_hari' => 'required|numeric',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:5024',
         ]);
 
-        Kendaraan::create($request->all());
+        $data = $request->except('gambar');
+
+        if ($request->hasFile('gambar')) {
+            $file = $request->file('gambar');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('uploads/kendaraan'), $filename);
+
+            $data['gambar'] = $filename;
+        }
+
+        Kendaraan::create($data);
 
         return redirect('/admin/kendaraan')
             ->with('success', 'Kendaraan berhasil ditambahkan');
     }
+
 
     public function edit($id)
     {
@@ -52,6 +64,18 @@ class KendaraanController extends Controller
             ]);
 
         $kendaraan = Kendaraan::findOrFail($id);
+
+        if ($request->hasFile('gambar')) {
+            if ($kendaraan->gambar && file_exists(public_path('uploads/kendaraan/' . $kendaraan->gambar))) {
+                unlink(public_path('uploads/kendaraan/' . $kendaraan->gambar));
+            }
+
+            $file = $request->file('gambar');
+            $namaFile = time() . '.' . $file->extension();
+            $file->move(public_path('uploads/kendaraan'), $namaFile);
+            $request['gambar'] = $namaFile;
+}
+
         $kendaraan->update($request->all());
 
         return redirect('/admin/kendaraan')
