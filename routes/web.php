@@ -90,3 +90,7 @@ Route::get('/', function () {
 
 Route::get('/kendaraan', [UserKendaraanController::class, 'index'])
     ->name('kendaraan.index');
+
+Route::get('/kendaraan/{id}', [UserKendaraanController::class, 'show'])
+    ->name('kendaraan.show');
+

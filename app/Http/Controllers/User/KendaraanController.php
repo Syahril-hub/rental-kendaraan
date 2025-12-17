@@ -15,4 +15,13 @@ class KendaraanController extends Controller
 
         return view('user.kendaraan.index', compact('kendaraans'));
     }
+
+    public function show($id)
+    {
+        $kendaraan = Kendaraan::where('status', 'tersedia')
+            ->findOrFail($id);
+
+        return view('user.kendaraan.show', compact('kendaraan'));
+    }
+
 }
