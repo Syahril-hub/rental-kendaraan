@@ -11,14 +11,23 @@ class PesananController extends Controller
     /**
      * List semua pesanan (admin)
      */
-    public function index()
+    public function index(Request $request)
     {
-        $pesanans = Pesanan::with(['user', 'kendaraan'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $query = Pesanan::with(['user', 'kendaraan'])
+            ->orderBy('created_at', 'desc');
+
+        // ======================
+        // FILTER STATUS
+        // ======================
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $pesanans = $query->get();
 
         return view('admin.pesanan.index', compact('pesanans'));
     }
+
 
     /**
      * Detail pesanan

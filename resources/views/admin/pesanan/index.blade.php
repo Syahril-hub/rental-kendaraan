@@ -4,6 +4,23 @@
     <p style="color:green">{{ session('success') }}</p>
 @endif
 
+<form method="GET" action="{{ route('admin.pesanan.index') }}">
+    <label>Status:</label>
+
+    <select name="status">
+        <option value="">-- Semua --</option>
+        <option value="pending" {{ request('status')=='pending' ? 'selected' : '' }}>Pending</option>
+        <option value="dibayar" {{ request('status')=='dibayar' ? 'selected' : '' }}>Dibayar</option>
+        <option value="selesai" {{ request('status')=='selesai' ? 'selected' : '' }}>Selesai</option>
+        <option value="expired" {{ request('status')=='expired' ? 'selected' : '' }}>Expired</option>
+    </select>
+
+    <button type="submit">Filter</button>
+</form>
+
+<hr>
+
+
 <table border="1" cellpadding="10">
     <tr>
         <th>No</th>
