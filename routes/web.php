@@ -3,10 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\KendaraanController;
+use App\Http\Controllers\Admin\PesananController;
+
 
 Route::middleware('admin')->prefix('admin')->group(function () {
 
+    // ======================
     // KENDARAAN
+    // ======================
     Route::get('/kendaraan', [KendaraanController::class, 'index'])
         ->name('admin.kendaraan.index');
 
@@ -16,18 +20,29 @@ Route::middleware('admin')->prefix('admin')->group(function () {
     Route::post('/kendaraan', [KendaraanController::class, 'store'])
         ->name('admin.kendaraan.store');
 
-    // EDIT
     Route::get('/kendaraan/{id}/edit', [KendaraanController::class, 'edit'])
         ->name('admin.kendaraan.edit');
 
-    // UPDATE
     Route::put('/kendaraan/{id}', [KendaraanController::class, 'update'])
         ->name('admin.kendaraan.update');
 
-    // DELETE
     Route::delete('/kendaraan/{id}', [KendaraanController::class, 'destroy'])
         ->name('admin.kendaraan.destroy');
+
+
+    // ======================
+    // PESANAN (ADMIN)
+    // ======================
+    Route::get('/pesanan', [PesananController::class, 'index'])
+        ->name('admin.pesanan.index');
+
+    Route::get('/pesanan/{id}', [PesananController::class, 'show'])
+        ->name('admin.pesanan.show');
+
+    Route::put('/pesanan/{id}', [PesananController::class, 'update'])
+        ->name('admin.pesanan.update');
 });
+
 
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
