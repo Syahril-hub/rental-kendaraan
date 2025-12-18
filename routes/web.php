@@ -6,7 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\KendaraanController as AdminKendaraanController;
 use App\Http\Controllers\Admin\PesananController as AdminPesananController;
 use App\Http\Controllers\User\KendaraanController as UserKendaraanController;
-
+use App\Http\Controllers\User\PesananController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,6 +78,13 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
 
+/*
+|--------------------------------------------------------------------------
+| USER PESANAN
+|--------------------------------------------------------------------------
+*/
+Route::post('/pesan', [PesananController::class, 'store'])
+    ->name('pesanan.store');
 
 /*
 |--------------------------------------------------------------------------
