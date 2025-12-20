@@ -1,3 +1,6 @@
+@extends('layouts.admin')
+
+@section('content')
 <h1>Data Kendaraan</h1>
 
 @if(session('success'))
@@ -61,3 +64,4 @@
 
     @endforeach
 </table>
+@endsection
