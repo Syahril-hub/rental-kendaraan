@@ -1,3 +1,5 @@
+@extends('layouts.admin')
+
 <h1>Tambah Kendaraan</h1>
 
 @if ($errors->any())
