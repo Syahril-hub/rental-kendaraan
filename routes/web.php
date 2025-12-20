@@ -80,12 +80,17 @@ Route::post('/logout', [AuthController::class, 'logout'])
 
 /*
 |--------------------------------------------------------------------------
-| USER PESANAN
+| USER PESANAN (BOOKING FLOW)
 |--------------------------------------------------------------------------
 */
-Route::post('/pesan', [PesananController::class, 'store'])
-    ->name('pesanan.store');
+Route::post('/pesanan/preview', [PesananController::class, 'preview'])
+    ->middleware('auth')
+    ->name('pesanan.preview');
 
+Route::post('/pesanan/store', [PesananController::class, 'store'])
+    ->middleware('auth')
+    ->name('pesanan.store');
+   
 /*
 |--------------------------------------------------------------------------
 | PUBLIC ROUTES
