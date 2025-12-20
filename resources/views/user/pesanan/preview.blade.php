@@ -1,8 +1,13 @@
-<h3>{{ $kendaraan->nama }}</h3>
+<form method="POST" action="{{ route('pesanan.store') }}">
+    @csrf
+    
+    <input type="hidden" name="kendaraan_id" value="{{ $kendaraan->id }}">
+    <input type="hidden" name="tanggal_mulai" value="{{ $mulai->toDateString() }}">
+    <input type="hidden" name="tanggal_selesai" value="{{ $selesai->toDateString() }}">
+    <input type="hidden" name="total_hari" value="{{ $total_hari }}">
+    <input type="hidden" name="total_harga" value="{{ $total_harga }}">
 
-<p>Mulai: {{ $mulai->format('d M Y') }}</p>
-<p>Selesai: {{ $selesai->format('d M Y') }}</p>
-<p>Total Hari: {{ $total_hari }}</p>
-<p>Total Harga: Rp {{ number_format($total_harga) }}</p>
-
-<a href="{{ route('kendaraan.index') }}">Kembali</a>
+    <button type="submit" class="btn btn-primary">
+        Konfirmasi Pesanan
+    </button>
+</form>

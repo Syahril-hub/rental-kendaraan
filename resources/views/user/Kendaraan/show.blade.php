@@ -36,7 +36,7 @@
 {{-- ================= MODAL PESAN ================= --}}
 <div class="modal fade" id="pesanModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
-        <form method="POST" action="{{ route('pesanan.store') }}">
+        <form method="POST" action="{{ route('pesanan.preview') }}">
             @csrf
 
             <input type="hidden" name="kendaraan_id" value="{{ $kendaraan->id }}">
