@@ -19,12 +19,14 @@
 
     {{-- Action Button --}}
     <div class="mt-4">
-        <button class="btn btn-success"
+        <button type="button"
+            class="btn btn-success"
             data-bs-toggle="modal"
             data-bs-target="#pesanModal"
             {{ $kendaraan->status !== 'tersedia' ? 'disabled' : '' }}>
             Pesan Kendaraan
         </button>
+
 
         <a href="{{ route('kendaraan.index') }}" class="btn btn-secondary ms-2">
             Kembali
