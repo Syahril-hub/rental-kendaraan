@@ -15,7 +15,7 @@ class PesananController extends Controller
     {
         $request->validate([
             'kendaraan_id' => 'required|exists:kendaraans,id',
-            'tanggal_mulai' => 'required|date',
+            'tanggal_mulai' => 'required|date|after_or_equal:today',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
         ]);
 
@@ -40,9 +40,10 @@ class PesananController extends Controller
     {
         $request->validate([
             'kendaraan_id' => 'required|exists:kendaraans,id',
-            'tanggal_mulai' => 'required|date',
+            'tanggal_mulai' => 'required|date|after_or_equal:today',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
         ]);
+
 
         $kendaraan = Kendaraan::findOrFail($request->kendaraan_id);
 
