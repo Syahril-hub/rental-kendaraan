@@ -50,20 +50,26 @@
                 </div>
 
                 <div class="modal-body">
+                    @php
+                        $today = now()->toDateString();
+                    @endphp
+
                     <div class="mb-3">
-                        <label>Tanggal Mulai</label>
+                        <label class="form-label">Tanggal Mulai</label>
                         <input type="date"
-                               name="tanggal_mulai"
-                               class="form-control"
-                               required>
+                            name="tanggal_mulai"
+                            class="form-control"
+                            min="{{ $today }}"
+                            required>
                     </div>
 
                     <div class="mb-3">
-                        <label>Tanggal Selesai</label>
+                        <label class="form-label">Tanggal Selesai</label>
                         <input type="date"
-                               name="tanggal_selesai"
-                               class="form-control"
-                               required>
+                            name="tanggal_selesai"
+                            class="form-control"
+                            min="{{ $today }}"
+                            required>
                     </div>
                 </div>
 
@@ -73,9 +79,27 @@
                     </button>
                 </div>
             </div>
+
         </form>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const start = document.querySelector('input[name="tanggal_mulai"]');
+    const end = document.querySelector('input[name="tanggal_selesai"]');
+
+    if (start && end) {
+        start.addEventListener('change', function () {
+            end.min = this.value;
+            if (end.value && end.value < this.value) {
+                end.value = this.value;
+            }
+        });
+    }
+});
+</script>
+
 {{-- =============== END MODAL ================= --}}
 
 @endsection
