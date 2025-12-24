@@ -35,6 +35,7 @@
         @if ($k->gambar)
             <img 
                 src="{{ asset('uploads/kendaraan/' . $k->gambar) }}" 
+                alt="{{ $k->nama }}"
                 width="80"
                 style="object-fit:cover; border-radius:6px;"
             >
@@ -42,6 +43,7 @@
             -
         @endif
     </td>
+
 
 
     <td>{{ $k->status }}</td>
