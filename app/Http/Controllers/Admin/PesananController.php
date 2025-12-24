@@ -75,7 +75,7 @@ class PesananController extends Controller
         // ======================
         if ($request->status === 'dibayar') {
             $pesanan->kendaraan->update([
-                'status' => 'tidak tersedia',
+                'status' => 'disewa',
             ]);
         }
 
