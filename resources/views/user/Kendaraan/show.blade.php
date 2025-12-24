@@ -8,7 +8,7 @@
 
     {{-- Gambar Kendaraan --}}
     <div class="mb-3">
-        <img src="{{ asset($kendaraan->gambar) }}"
+        <img src="{{ asset('uploads/kendaraan/' . $kendaraan->gambar) }}"
              alt="{{ $kendaraan->nama }}"
              style="max-width: 100%; height: auto;">
     </div>
