@@ -17,16 +17,17 @@
                             <td class="text-end"><strong>{{ $kendaraan->nama }}</strong></td>
                         </tr>
                         <tr>
-                            <td>Tanggal Mulai</td>
-                            <td class="text-end">{{ $mulai->format('d M Y') }}</td>
+                            <td>Mulai</td>
+                            <td class="text-end">{{ $mulai->format('d M Y H:i') }}</td>
                         </tr>
                         <tr>
-                            <td>Tanggal Selesai</td>
-                            <td class="text-end">{{ $selesai->format('d M Y') }}</td>
+                            <td>Selesai</td>
+                            <td class="text-end">{{ $selesai->format('d M Y H:i') }}</td>
                         </tr>
+
                         <tr>
                             <td>Total Hari</td>
-                            <td class="text-end">{{ $total_hari }} hari</td>
+                            <td class="text-end">{{ $totalHari }} hari</td>
                         </tr>
                         <tr>
                             <td>Harga / Hari</td>
@@ -38,7 +39,7 @@
                             <td><strong>Total Harga</strong></td>
                             <td class="text-end">
                                 <strong class="text-success">
-                                    Rp {{ number_format($total_harga) }}
+                                    Rp {{ number_format($totalHarga) }}
                                 </strong>
                             </td>
                         </tr>
@@ -46,16 +47,18 @@
 
                     <form method="POST" action="{{ route('pesanan.store') }}">
                         @csrf
+
                         <input type="hidden" name="kendaraan_id" value="{{ $kendaraan->id }}">
                         <input type="hidden" name="tanggal_mulai" value="{{ $mulai->toDateString() }}">
+                        <input type="hidden" name="jam_mulai" value="{{ $mulai->format('H:i') }}">
                         <input type="hidden" name="tanggal_selesai" value="{{ $selesai->toDateString() }}">
-                        <input type="hidden" name="total_hari" value="{{ $total_hari }}">
-                        <input type="hidden" name="total_harga" value="{{ $total_harga }}">
+                        <input type="hidden" name="jam_selesai" value="{{ $selesai->format('H:i') }}">
 
                         <button type="submit" class="btn btn-primary w-100">
                             Konfirmasi Pesanan
                         </button>
                     </form>
+
                 </div>
             </div>
 
