@@ -18,9 +18,16 @@ class Pesanan extends Model
         'kendaraan_id',
         'tanggal_mulai',
         'tanggal_selesai',
+        'total_hari',
         'total_harga',
         'status',
     ];
+
+    protected $casts = [
+        'tanggal_mulai' => 'datetime',
+        'tanggal_selesai' => 'datetime',
+    ];
+
 
     public function user()
     {

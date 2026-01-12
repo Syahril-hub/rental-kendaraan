@@ -15,51 +15,58 @@ class PesananController extends Controller
     {
         $request->validate([
             'kendaraan_id' => 'required|exists:kendaraans,id',
-            'tanggal_mulai' => 'required|date|after_or_equal:today',
-            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'mulai' => 'required|date',
+            'selesai' => 'required|date|after:mulai',
         ]);
 
         $kendaraan = Kendaraan::findOrFail($request->kendaraan_id);
 
-        $mulai = Carbon::parse($request->tanggal_mulai);
-        $selesai = Carbon::parse($request->tanggal_selesai);
+        $mulai = Carbon::parse($request->mulai);
+        $selesai = Carbon::parse($request->selesai);
 
-        $total_hari = $mulai->diffInDays($selesai) + 1;
-        $total_harga = $total_hari * $kendaraan->harga_per_hari;
+        $totalJam = $mulai->diffInHours($selesai);
+        $totalHari = ceil($totalJam / 24);
+        $totalHarga = $totalHari * $kendaraan->harga_per_hari;
 
         return view('user.pesanan.preview', compact(
             'kendaraan',
             'mulai',
             'selesai',
-            'total_hari',
-            'total_harga'
+            'totalHari',
+            'totalHarga'
         ));
+
+        if ($selesai <= $mulai) {
+            return back()->withErrors('Waktu selesai harus setelah waktu mulai');
+        }
+
     }
+
 
     public function store(Request $request)
     {
         $request->validate([
             'kendaraan_id' => 'required|exists:kendaraans,id',
-            'tanggal_mulai' => 'required|date|after_or_equal:today',
-            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'mulai' => 'required|date',
+            'selesai' => 'required|date|after:mulai',
         ]);
-
 
         $kendaraan = Kendaraan::findOrFail($request->kendaraan_id);
 
-        $mulai = Carbon::parse($request->tanggal_mulai);
-        $selesai = Carbon::parse($request->tanggal_selesai);
+        $mulai = Carbon::parse($request->mulai);
+        $selesai = Carbon::parse($request->selesai);
 
-        $total_hari = $mulai->diffInDays($selesai) + 1;
-        $total_harga = $total_hari * $kendaraan->harga_per_hari;
+        $totalJam = $mulai->diffInHours($selesai);
+        $totalHari = ceil($totalJam / 24);
+        $totalHarga = $totalHari * $kendaraan->harga_per_hari;
 
         Pesanan::create([
             'user_id' => Auth::id(),
             'kendaraan_id' => $kendaraan->id,
             'tanggal_mulai' => $mulai,
             'tanggal_selesai' => $selesai,
-            'total_hari' => $total_hari,
-            'total_harga' => $total_harga,
+            'total_hari' => $totalHari,
+            'total_harga' => $totalHarga,
             'status' => 'pending',
         ]);
 
@@ -67,6 +74,7 @@ class PesananController extends Controller
             ->route('kendaraan.index')
             ->with('success', 'Pesanan berhasil dibuat');
     }
+
 
 
 }
