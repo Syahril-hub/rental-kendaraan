@@ -8,11 +8,11 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $kendaraanPopuler = Kendaraan::where('status', 'tersedia')
+        $kendaraans = Kendaraan::where('status', 'tersedia')
             ->latest()
             ->take(4)
             ->get();
 
-        return view('welcome', compact('kendaraanPopuler'));
+        return view('welcome', compact('kendaraans'));
     }
 }
