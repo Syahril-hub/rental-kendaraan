@@ -39,11 +39,11 @@
 
     <div>
       <label style="font-weight:600;">Tipe Kendaraan</label>
-      <select name="tipe"
-              style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px;">
-        <option value="">Semua</option>
-        <option value="matic">Matic</option>
-        <option value="manual">Manual</option>
+      <select name="tipe" 
+        style="width:100%; padding:10px; border:1px solid #ddd; border-radius:6px;"> 
+        <option value="">Semua</option> 
+        <option value="matic">Matic</option> 
+        <option value="manual">Bebek</option> 
       </select>
     </div>
 
