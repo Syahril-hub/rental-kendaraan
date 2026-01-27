@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\KendaraanController as AdminKendaraanController;
 use App\Http\Controllers\Admin\PesananController as AdminPesananController;
 use App\Http\Controllers\User\KendaraanController as UserKendaraanController;
 use App\Http\Controllers\User\PesananController;
+use App\Http\Controllers\User\BookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,7 +61,6 @@ Route::prefix('admin')->group(function () {
     });
 });
 
-
 /*
 |--------------------------------------------------------------------------
 | USER AUTH ROUTES
@@ -81,19 +81,6 @@ Route::post('/logout', [AuthController::class, 'logout'])
 
 /*
 |--------------------------------------------------------------------------
-| USER PESANAN (BOOKING FLOW)
-|--------------------------------------------------------------------------
-*/
-Route::post('/pesanan/preview', [PesananController::class, 'preview'])
-    ->middleware('auth')
-    ->name('pesanan.preview');
-
-Route::post('/pesanan/store', [PesananController::class, 'store'])
-    ->middleware('auth')
-    ->name('pesanan.store');
-   
-/*
-|--------------------------------------------------------------------------
 | PUBLIC ROUTES
 |--------------------------------------------------------------------------
 */
@@ -105,3 +92,24 @@ Route::get('/kendaraan', [UserKendaraanController::class, 'index'])
 Route::get('/kendaraan/{id}', [UserKendaraanController::class, 'show'])
     ->name('kendaraan.show');
 
+/*
+|--------------------------------------------------------------------------
+| USER BOOKING ROUTES (NEW!)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+    
+    // Booking System
+    Route::post('/kendaraan/{id}/booking', [BookingController::class, 'store'])
+        ->name('booking.store');
+    
+    Route::get('/booking/success/{id}', [BookingController::class, 'success'])
+        ->name('booking.success');
+    
+    // Pesanan (Old Flow - Optional)
+    Route::post('/pesanan/preview', [PesananController::class, 'preview'])
+        ->name('pesanan.preview');
+    
+    Route::post('/pesanan/store', [PesananController::class, 'store'])
+        ->name('pesanan.store');
+});

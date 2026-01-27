@@ -413,8 +413,8 @@
             </div>
 
             @if($kendaraan->status == 'tersedia')
-                <form method="GET" action="{{ route('pesanan.preview') }}">
-                    <input type="hidden" name="kendaraan_id" value="{{ $kendaraan->id }}">
+                <form method="POST" action="{{ route('booking.store', $kendaraan->id) }}">
+                    @csrf
 
                     <div class="booking-form-group">
                         <label class="form-label-booking">
@@ -436,7 +436,7 @@
                         <label class="form-label-booking">
                             <i class="bi bi-hourglass-split me-1"></i> Durasi Sewa
                         </label>
-                        <select name="total_hari" class="form-control-booking" id="durasiSelect" data-price="{{ $kendaraan->harga_per_hari }}" required>
+                        <select name="durasi" class="form-control-booking" id="durasiSelect" data-price="{{ $kendaraan->harga_per_hari }}" required>
                             @for($i = 1; $i <= 30; $i++)
                                 <option value="{{ $i }}">{{ $i }} hari</option>
                             @endfor
@@ -510,6 +510,5 @@ if (durasiSelect) {
     });
 }
 </script>
-
 
 @endsection
