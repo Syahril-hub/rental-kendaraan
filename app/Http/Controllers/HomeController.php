@@ -10,7 +10,7 @@ class HomeController extends Controller
     {
         $kendaraans = Kendaraan::where('status', 'tersedia')
             ->latest()
-            ->take(4)
+            ->take(6)
             ->get();
 
         return view('welcome', compact('kendaraans'));

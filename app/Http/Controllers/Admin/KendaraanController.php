@@ -8,9 +8,28 @@ use Illuminate\Http\Request;
 
 class KendaraanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $kendaraans = Kendaraan::all();
+        $query = Kendaraan::query();
+
+        // SEARCH
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('nama', 'like', "%{$search}%")
+                ->orWhere('brand', 'like', "%{$search}%")
+                ->orWhere('no_plat', 'like', "%{$search}%");
+            });
+        }
+
+        // FILTER TIPE
+        if ($request->filled('tipe')) {
+            $query->where('tipe', $request->tipe);
+        }
+
+        // PAGINATION
+        $kendaraans = $query->latest()->paginate(10);
+        
         return view('admin.kendaraan.index', compact('kendaraans'));
     }
 
