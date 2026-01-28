@@ -20,20 +20,26 @@ class AdminController extends Controller
         // Kendaraan Disewa
         $kendaraanDisewa = Kendaraan::where('status', 'disewa')->count();
         
-        // Total Booking (jika ada table booking)
+        // Total Booking
         $totalBooking = Booking::count();
         
         // Booking Hari Ini
         $bookingHariIni = Booking::whereDate('created_at', today())->count();
         
-        // Revenue Hari Ini (jika ada kolom total_harga)
+        // Revenue Hari Ini
         $revenueHariIni = Booking::whereDate('created_at', today())
             ->sum('total_harga');
         
-        // Kendaraan Terpopuler (paling banyak dibooking)
+        // Kendaraan Terpopuler
         $kendaraanPopuler = Kendaraan::withCount('bookings')
             ->orderBy('bookings_count', 'desc')
             ->take(5)
+            ->get();
+
+        // ✅ PESANAN PENDING (BARU!)
+        $pesananPending = Booking::with(['user', 'kendaraan'])
+            ->where('status', 'pending')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return view('admin.dashboard', compact(
@@ -43,7 +49,8 @@ class AdminController extends Controller
             'totalBooking',
             'bookingHariIni',
             'revenueHariIni',
-            'kendaraanPopuler'
+            'kendaraanPopuler',
+            'pesananPending'  // ✅ TAMBAH INI
         ));
     }
 }

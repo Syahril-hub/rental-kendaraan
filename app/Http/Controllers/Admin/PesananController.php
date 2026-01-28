@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Pesanan;
+use App\Models\Booking;  // ✅ GANTI INI!
 use Illuminate\Http\Request;
 
 class PesananController extends Controller
@@ -13,7 +13,7 @@ class PesananController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Pesanan::with(['user', 'kendaraan'])
+        $query = Booking::with(['user', 'kendaraan'])  // ✅ GANTI INI!
             ->orderBy('created_at', 'desc');
 
         // ======================
@@ -28,13 +28,12 @@ class PesananController extends Controller
         return view('admin.pesanan.index', compact('pesanans'));
     }
 
-
     /**
      * Detail pesanan
      */
     public function show($id)
     {
-        $pesanan = Pesanan::with(['user', 'kendaraan'])
+        $pesanan = Booking::with(['user', 'kendaraan'])  // ✅ GANTI INI!
             ->findOrFail($id);
 
         return view('admin.pesanan.show', compact('pesanan'));
@@ -45,19 +44,19 @@ class PesananController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $pesanan = Pesanan::with('kendaraan')->findOrFail($id);
+        $pesanan = Booking::with('kendaraan')->findOrFail($id);  // ✅ GANTI INI!
 
         // ======================
         // VALIDASI
         // ======================
         $request->validate([
-            'status' => 'required|in:pending,dibayar,selesai,expired',
+            'status' => 'required|in:pending,confirmed,completed,cancelled',  // ✅ SESUAIKAN STATUS!
         ]);
 
         // ======================
         // GUARD LOGIC
         // ======================
-        if ($pesanan->status === 'selesai') {
+        if ($pesanan->status === 'completed') {
             return redirect()
                 ->route('admin.pesanan.index')
                 ->with('error', 'Pesanan sudah selesai dan tidak bisa diubah');
@@ -73,13 +72,19 @@ class PesananController extends Controller
         // ======================
         // UPDATE STATUS KENDARAAN
         // ======================
-        if ($request->status === 'dibayar') {
+        if ($request->status === 'confirmed') {
             $pesanan->kendaraan->update([
                 'status' => 'disewa',
             ]);
         }
 
-        if ($request->status === 'selesai') {
+        if ($request->status === 'completed') {
+            $pesanan->kendaraan->update([
+                'status' => 'tersedia',
+            ]);
+        }
+
+        if ($request->status === 'cancelled') {
             $pesanan->kendaraan->update([
                 'status' => 'tersedia',
             ]);

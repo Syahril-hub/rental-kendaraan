@@ -91,10 +91,83 @@
             <div class="card border-0 shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title mb-3">Revenue Hari Ini</h5>
-                    <h2 class="text-success">Rp{{ number_format($revenueHariIni ?? 0) }}</h2>
+                    <h2 class="text-success">Rp{{ number_format($revenueHariIni ?? 0, 0, ',', '.') }}</h2>
                     <small class="text-muted">{{ date('d F Y') }}</small>
                 </div>
             </div>
+        </div>
+    </div>
+
+    {{-- ✅ PESANAN PENDING (BARU!) --}}
+    <div class="card border-0 shadow-sm mb-4" id="pesanan-section">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="card-title mb-0">⏰ Pesanan Menunggu Konfirmasi</h5>
+                <a href="{{ route('admin.pesanan.index') }}" class="btn btn-sm btn-outline-primary">
+                    Lihat Semua
+                </a>
+            </div>
+            
+            @if($pesananPending->count() > 0)
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Kendaraan</th>
+                                <th>Tanggal Mulai</th>
+                                <th>Durasi</th>
+                                <th>Total Harga</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($pesananPending as $pesanan)
+                            <tr>
+                                <td>
+                                    <div>
+                                        <strong>{{ $pesanan->user->name }}</strong><br>
+                                        <small class="text-muted">{{ $pesanan->user->email }}</small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <strong>{{ $pesanan->kendaraan->nama }}</strong><br>
+                                        <small class="text-muted">{{ $pesanan->kendaraan->no_plat }}</small>
+                                    </div>
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($pesanan->tanggal_mulai)->format('d M Y, H:i') }}</td>
+                                <td>{{ $pesanan->durasi }} hari</td>
+                                <td><strong>Rp {{ number_format($pesanan->total_harga, 0, ',', '.') }}</strong></td>
+                                <td>
+                                    <a href="{{ route('admin.pesanan.show', $pesanan->id) }}" 
+                                       class="btn btn-sm btn-primary me-1">
+                                        <i class="bi bi-eye"></i> Detail
+                                    </a>
+                                    
+                                    <form action="{{ route('admin.pesanan.update', $pesanan->id) }}" 
+                                          method="POST" 
+                                          style="display: inline;"
+                                          onsubmit="return confirm('Approve pesanan ini?')">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="status" value="confirmed">
+                                        <button type="submit" class="btn btn-sm btn-success">
+                                            <i class="bi bi-check-circle"></i> Approve
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @else
+                <div class="text-center py-4">
+                    <i class="bi bi-check-circle text-success fs-1"></i>
+                    <p class="text-muted mt-2 mb-0">Semua pesanan sudah dikonfirmasi!</p>
+                </div>
+            @endif
         </div>
     </div>
 
@@ -103,7 +176,7 @@
         <div class="card-body">
             <h5 class="card-title mb-3">🏆 Kendaraan Terpopuler</h5>
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover mb-0">
                     <thead>
                         <tr>
                             <th>Nama Kendaraan</th>
