@@ -26,7 +26,7 @@ Route::prefix('admin')->group(function () {
 
     Route::middleware('admin')->group(function () {
 
-        // ✅ DASHBOARD - FIXED!
+        // ✅ DASHBOARD
         Route::get('/dashboard', [AdminController::class, 'dashboard'])
             ->name('admin.dashboard');
 
@@ -94,19 +94,26 @@ Route::get('/kendaraan/{id}', [UserKendaraanController::class, 'show'])
 
 /*
 |--------------------------------------------------------------------------
-| USER BOOKING ROUTES
+| USER AUTHENTICATED ROUTES
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
     
-    // Booking System
+    // ===== BOOKING SYSTEM =====
     Route::post('/kendaraan/{id}/booking', [BookingController::class, 'store'])
         ->name('booking.store');
     
     Route::get('/booking/success/{id}', [BookingController::class, 'success'])
         ->name('booking.success');
     
-    // Pesanan (Old Flow - Optional)
+    // ===== PESANAN USER (Daftar & Detail) =====
+    Route::get('/pesanan', [PesananController::class, 'index'])
+        ->name('user.pesanan.index');
+    
+    Route::get('/pesanan/{id}', [PesananController::class, 'show'])
+        ->name('user.pesanan.show');
+    
+    // ===== PESANAN PREVIEW (Old Flow - Optional) =====
     Route::post('/pesanan/preview', [PesananController::class, 'preview'])
         ->name('pesanan.preview');
     
