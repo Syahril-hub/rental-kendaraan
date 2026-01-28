@@ -338,10 +338,9 @@
                         <i class="bi bi-bicycle me-1"></i> Tipe Kendaraan
                     </label>
                     <select name="tipe" class="form-control-custom">
-                        <option value="">Semua tipe</option>
-                        <option value="matic">Matic</option>
-                        <option value="manual">Bebek</option>
-                        <option value="sport">Sport</option>
+                        <option value="">Semua Tipe</option>
+                        <option value="Matic">Matic</option>     <!-- HARUS "Matic" bukan "matic" -->
+                        <option value="Manual">Manual</option>   <!-- HARUS "Manual" bukan "manual" -->
                     </select>
                 </div>
             </div>
