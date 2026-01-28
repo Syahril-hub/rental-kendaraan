@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Kendaraan;
 use App\Models\Pesanan;
 use Carbon\Carbon;
+use App\Models\Booking;
 
 class PesananController extends Controller
 {
@@ -24,8 +25,12 @@ class PesananController extends Controller
         $mulai = Carbon::parse($request->mulai);
         $selesai = Carbon::parse($request->selesai);
 
+        if ($selesai <= $mulai) {
+            return back()->withErrors('Waktu selesai harus setelah waktu mulai');
+        }
+
         $totalJam = $mulai->diffInHours($selesai);
-        $totalHari = ceil($totalJam / 24);
+        $totalHari = (int) ceil($totalJam / 24);
         $totalHarga = $totalHari * $kendaraan->harga_per_hari;
 
         return view('user.pesanan.preview', compact(
@@ -35,13 +40,7 @@ class PesananController extends Controller
             'totalHari',
             'totalHarga'
         ));
-
-        if ($selesai <= $mulai) {
-            return back()->withErrors('Waktu selesai harus setelah waktu mulai');
-        }
-
     }
-
 
     public function store(Request $request)
     {
@@ -75,6 +74,25 @@ class PesananController extends Controller
             ->with('success', 'Pesanan berhasil dibuat');
     }
 
+    public function index()
+    {
+        $pesanans = Booking::with('kendaraan')
+            ->where('user_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('user.pesanan.index', compact('pesanans'));
+    }
+
+    public function show($id)
+    {
+        $pesanan = Booking::with('kendaraan', 'user')
+            ->where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        return view('user.pesanan.show', compact('pesanan'));
+    }
 
 
 }

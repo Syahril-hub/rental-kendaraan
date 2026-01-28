@@ -144,7 +144,7 @@
 
                     @auth
                         <li class="nav-item">
-                            <a class="nav-link-custom" href="#">Daftar Pesanan</a>
+                            <a class="nav-link-custom" href="{{ route('user.pesanan.index') }}">Daftar Pesanan</a>
                         </li>
                         <li class="nav-item ms-2">
                             <form action="{{ route('logout') }}" method="POST" class="d-inline">
