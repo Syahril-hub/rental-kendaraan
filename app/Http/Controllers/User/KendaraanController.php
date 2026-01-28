@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
-use illuminate\Http\Request;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Kendaraan;
 
@@ -10,14 +10,15 @@ class KendaraanController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Kendaraan::query()
-            ->where('status', 'tersedia');
+        // Query dasar
+        $query = Kendaraan::where('status', 'tersedia');
 
-        // FILTER TIPE
-        if ($request->filled('tipe')) {
-            $query->where('tipe', $request->tipe);
+        // FILTER TIPE - FIX: Tambahkan kondisi strict
+        if ($request->filled('tipe') && $request->tipe != '') {
+            $query->where('tipe', '=', $request->tipe);
         }
 
+        // Ambil data & sort
         $kendaraans = $query
             ->orderBy('created_at', 'desc')
             ->get();
@@ -32,5 +33,4 @@ class KendaraanController extends Controller
 
         return view('user.kendaraan.show', compact('kendaraan'));
     }
-
 }
