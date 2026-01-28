@@ -3,12 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\User\BookingController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\KendaraanController as AdminKendaraanController;
 use App\Http\Controllers\Admin\PesananController as AdminPesananController;
 use App\Http\Controllers\User\KendaraanController as UserKendaraanController;
 use App\Http\Controllers\User\PesananController;
-use App\Http\Controllers\User\BookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,9 +26,9 @@ Route::prefix('admin')->group(function () {
 
     Route::middleware('admin')->group(function () {
 
-        Route::get('/dashboard', function () {
-            return "Halo Admin";
-        })->name('admin.dashboard');
+        // ✅ DASHBOARD - FIXED!
+        Route::get('/dashboard', [AdminController::class, 'dashboard'])
+            ->name('admin.dashboard');
 
         // ===== KENDARAAN =====
         Route::get('/kendaraan', [AdminKendaraanController::class, 'index'])
@@ -94,7 +94,7 @@ Route::get('/kendaraan/{id}', [UserKendaraanController::class, 'show'])
 
 /*
 |--------------------------------------------------------------------------
-| USER BOOKING ROUTES (NEW!)
+| USER BOOKING ROUTES
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {

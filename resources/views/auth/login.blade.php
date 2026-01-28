@@ -126,6 +126,37 @@
 .auth-footer a:hover {
     text-decoration: underline;
 }
+
+/* ✅ TAMBAHAN: Style untuk password toggle */
+.password-wrapper {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.password-toggle:hover {
+    color: #4361EE;
+}
+
+.form-control-auth.with-icon {
+    padding-right: 40px;
+}
 </style>
 
 <div class="auth-container">
@@ -144,19 +175,32 @@
             @csrf
 
             <div class="mb-3">
-                <label class="form-label-auth">No. WhatsApp</label>
-                <input type="email" name="email" class="form-control form-control-auth" 
-                       placeholder="contoh@email.com" required>
+                <label class="form-label-auth">Email / No. WhatsApp</label>
+                <input type="text" name="email" class="form-control form-control-auth" 
+                       placeholder="contoh@email.com atau 08123456789" required>
             </div>
 
+            {{-- ✅ PASSWORD DENGAN TOGGLE SHOW/HIDE --}}
             <div class="mb-4">
                 <label class="form-label-auth">Password</label>
-                <input type="password" name="password" class="form-control form-control-auth" 
-                       placeholder="Masukkan password" required>
+                <div class="password-wrapper">
+                    <input type="password" 
+                           name="password" 
+                           id="password" 
+                           class="form-control form-control-auth with-icon" 
+                           placeholder="Masukkan password" 
+                           required>
+                    <button type="button" 
+                            class="password-toggle" 
+                            id="togglePassword"
+                            aria-label="Toggle password visibility">
+                        <i class="bi bi-eye" id="eyeIcon"></i>
+                    </button>
+                </div>
             </div>
 
             <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" id="remember">
+                <input type="checkbox" class="form-check-input" id="remember" name="remember">
                 <label class="form-check-label" for="remember" style="font-size: 0.9rem;">
                     Ingatkan saya
                 </label>
@@ -183,5 +227,31 @@
 
     </div>
 </div>
+
+{{-- ✅ JAVASCRIPT PASSWORD TOGGLE --}}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const togglePassword = document.getElementById('togglePassword');
+    const password = document.getElementById('password');
+    const eyeIcon = document.getElementById('eyeIcon');
+    
+    if (togglePassword && password && eyeIcon) {
+        togglePassword.addEventListener('click', function() {
+            // Toggle type password/text
+            const type = password.type === 'password' ? 'text' : 'password';
+            password.type = type;
+            
+            // Toggle icon
+            if (type === 'password') {
+                eyeIcon.classList.remove('bi-eye-slash');
+                eyeIcon.classList.add('bi-eye');
+            } else {
+                eyeIcon.classList.remove('bi-eye');
+                eyeIcon.classList.add('bi-eye-slash');
+            }
+        });
+    }
+});
+</script>
 
 @endsection

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Booking;
 
 class Kendaraan extends Model
 {
@@ -23,4 +24,10 @@ class Kendaraan extends Model
         'deskripsi',
         'status',
     ];
+
+    // Relasi ke table bookings
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'kendaraan_id');
+    }
 }

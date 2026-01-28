@@ -170,7 +170,7 @@
 
 .vehicles-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
 }
 
@@ -182,6 +182,7 @@
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .vehicle-card:hover {
@@ -194,6 +195,34 @@
     height: 200px;
     object-fit: cover;
     background: linear-gradient(135deg, #f5f7fa 0%, #e2e8f0 100%);
+}
+
+/* ✅ STATUS BADGE */
+.status-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    z-index: 1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.status-badge.tersedia {
+    background: #10b981;
+    color: white;
+}
+
+.status-badge.disewa {
+    background: #f59e0b;
+    color: white;
 }
 
 .vehicle-content {
@@ -253,6 +282,7 @@
 .empty-state {
     text-align: center;
     padding: 4rem 2rem;
+    grid-column: 1 / -1;
 }
 
 .empty-state i {
@@ -273,6 +303,12 @@
 }
 
 /* Responsive */
+@media (max-width: 992px) {
+    .vehicles-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
     .hero-title {
         font-size: 2.5rem;
@@ -291,7 +327,7 @@
     }
     
     .vehicles-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-template-columns: 1fr;
         gap: 1.5rem;
     }
 }
@@ -339,8 +375,8 @@
                     </label>
                     <select name="tipe" class="form-control-custom">
                         <option value="">Semua Tipe</option>
-                        <option value="Matic">Matic</option>     <!-- HARUS "Matic" bukan "matic" -->
-                        <option value="Manual">Manual</option>   <!-- HARUS "Manual" bukan "manual" -->
+                        <option value="Matic">Matic</option>
+                        <option value="Manual">Manual</option>
                     </select>
                 </div>
             </div>
@@ -399,6 +435,15 @@
     <div class="vehicles-grid">
         @forelse($kendaraans as $item)
             <div class="vehicle-card">
+                {{-- ✅ STATUS BADGE --}}
+                <span class="status-badge {{ $item->status == 'tersedia' ? 'tersedia' : 'disewa' }}">
+                    @if($item->status == 'tersedia')
+                        <i class="bi bi-check-circle-fill"></i> Tersedia
+                    @else
+                        <i class="bi bi-clock-fill"></i> Disewa
+                    @endif
+                </span>
+
                 <img src="{{ $item->gambar ? asset('uploads/kendaraan/'.$item->gambar) : 'https://via.placeholder.com/300x200?text=No+Image' }}"
                      alt="{{ $item->nama }}"
                      class="vehicle-image">
@@ -417,12 +462,10 @@
                 </div>
             </div>
         @empty
-            <div class="col-12">
-                <div class="empty-state">
-                    <i class="bi bi-inbox"></i>
-                    <h4>Belum Ada Kendaraan</h4>
-                    <p>Kendaraan akan segera tersedia. Silakan cek kembali nanti.</p>
-                </div>
+            <div class="empty-state">
+                <i class="bi bi-inbox"></i>
+                <h4>Belum Ada Kendaraan</h4>
+                <p>Kendaraan akan segera tersedia. Silakan cek kembali nanti.</p>
             </div>
         @endforelse
     </div>
